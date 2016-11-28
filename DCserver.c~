@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <errno.h>
 
-#define LISTENPORT 2015
+#define LISTENPORT 2019
 #define AZAMIUZUNLUK 1024
 
 int main()
@@ -13,7 +13,7 @@ int main()
     int sockfd,newfd;
     struct sockaddr_in serverAddr;
     struct sockaddr_in clientAddr;
-    char *gonder="server msj1";
+    char gonder[30]="server msj1";
     char str[AZAMIUZUNLUK];
     int gelenBayt,gidenBayt,structSize;
     //değişkenler tanımlandı
@@ -40,22 +40,27 @@ int main()
     if(-1==newfd)
     {perror("accept hata");}
     //bağlantı kuruldu mesaj okunucak
+    int i=0;
+    for(i;i<5;i++)
+    {
     gelenBayt=recv(newfd,&str,AZAMIUZUNLUK-1,0);
     if(-1==gelenBayt)
     {perror("recv hata!");}
     else if(0==gelenBayt)
     {printf("bağlantı koptu");}
     else
-    {printf("%d bayt aldım mesaj: %s",gelenBayt,str);}
+    {printf("%d bayt aldım mesaj: %s \n",gelenBayt,str);}
     //mesaj alındı soketi send e alıp mesaj yollanıcak
+    memset(gonder,'\0',30);
+    printf("mesaj gir:");scanf("%s",gonder);
     gidenBayt=send(newfd,gonder,strlen(gonder),0);
     if(-1==gidenBayt)
     {perror("send hata!");}
     else if(strlen(gonder) != gidenBayt)
     {printf("mesaj eksik gönderildi!");}
     else
-    {printf("mesaj gönderildi:%s",gonder);}
-    
+    {printf("mesaj gönderildi:%s \n",gonder);}
+    }
     close(newfd);
     close(sockfd);
     

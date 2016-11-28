@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <errno.h>
 
-#define SUNUCUPORT 1234
+#define SUNUCUPORT 2019
 #define SUNUCUIP "127.0.0.1"
 #define AZAMIUZUNLUK 1024
 
@@ -31,23 +31,25 @@ int main()
     if(-1==connect(sockfd,(struct sockaddr *)&serverAddr,sizeof (struct sockaddr)))
     {perror("'connect' bağlantı kurmada hata!");}
     //sunucuyla bağlantı kuruldu
-    
+    int i=0;
+    for(i;i<5;i++)
+    {
     gidenBayt=send(sockfd,gonder,strlen(gonder),0);
     if(-1==gidenBayt)
     {perror("mesaj göndermede hata!");}
     else if(strlen(gonder) != gidenBayt)
     {printf("mesaj eksik gitti!");}
     else 
-    {printf("mesaj gönderildi");}
-    
+    {printf("mesaj gönderildi\n");}
+    memset(str,'\0',30);
     gelenBayt=recv(sockfd,&str,AZAMIUZUNLUK-1,0);
     if(-1==gelenBayt)
     {perror("mesaj almada hata!");}
     else if(0==gelenBayt)
     {printf("bağlantı koptu");}
     else 
-    {printf("mesaj alındı: %s",str);}
-    
+    {printf("mesaj alındı: %s \n",str);}
+    }
     close(sockfd);
 }
 
